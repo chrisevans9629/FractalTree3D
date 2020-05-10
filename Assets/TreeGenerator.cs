@@ -13,37 +13,55 @@ public class TreeGenerator : MonoBehaviour
     [Range(0,1)]
     public float MinScale = 0.5f;
 
-    public int MaxBranches = 500;
+    [Range(1,10)]
+    public int MaxBranchSections = 10;
 
-    private int BranchCount = 0;
+    public int BranchingCount = 3;
+
+    [Range(0,12000)]
+    public int MaxBranches = 10000;
+
     // Start is called before the first frame update
     void Start()
     {
         var obj = Instantiate(BranchPrefab, transform.position, transform.rotation);
 
-        CreateSection(obj);
+        CreateSection(obj, 1);
     }
 
-    private void CreateSection(GameObject obj)
+    private void CreateSection(GameObject obj, int branchCount)
     {
-        if(BranchCount > MaxBranches)
-            return;
         if (obj.transform.localScale.y < MinScale)
         {
             return;
         }
+        if (branchCount > MaxBranchSections)
+            return;
+        if(branchCount * BranchingCount > MaxBranches)
+            return;
+        
+        var mainAngle = 360f / BranchingCount;
 
-        var a = CreateBranch(obj, 0);
-        var b = CreateBranch(obj, 1);
-        var c = CreateBranch(obj, 2);
+        GameObject[] branches = new GameObject[BranchingCount];
 
+        for (int i = 0; i < BranchingCount; i++)
+        {
+            var a = CreateBranch(obj, i * mainAngle);
+            
 
-        CreateSection(a);
-        CreateSection(b);
-        CreateSection(c);
+            branches[i] = a;
+        }
+        
+
+        
+        foreach (var branch in branches)
+        {
+            CreateSection(branch, branchCount + 1);
+        }
+
     }
 
-    private GameObject CreateBranch(GameObject obj, int side)
+    private GameObject CreateBranch(GameObject obj, float angle)
     {
         var slide = (obj.transform.up * obj.transform.localScale.y * (1 + BranchRatio));
 
@@ -57,8 +75,7 @@ public class TreeGenerator : MonoBehaviour
 
         obj2.transform.RotateAround(top - slide/ 2f, obj.transform.forward, RotateAngle);
 
-        obj2.transform.RotateAround(top - slide/2f, obj.transform.up, 120 * side);
-        BranchCount++;
+        obj2.transform.RotateAround(top - slide/2f, obj.transform.up, angle);
         return obj2;
     }
 
