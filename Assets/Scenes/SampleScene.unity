@@ -329,6 +329,7 @@ MonoBehaviour:
     type: 3}
   LeafPrefab: {fileID: 7679247811276665424, guid: 198734e93ca451942a1a531381f63fea,
     type: 3}
+  ShouldCreateLeaves: 0
   BranchRatio: 0.81
   RotateAngle: 26.6
   MinScale: 0.5
