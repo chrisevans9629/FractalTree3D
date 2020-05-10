@@ -327,10 +327,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BranchPrefab: {fileID: 6982205034385796999, guid: a35f07a7512b8c14794f02c2ffb5a879,
     type: 3}
-  Branches: 3
-  BranchRatio: 0.85
+  BranchRatio: 0.841
   RotateAngle: 45
   MinScale: 0.5
+  MaxBranches: 500
 --- !u!4 &2000477343
 Transform:
   m_ObjectHideFlags: 0

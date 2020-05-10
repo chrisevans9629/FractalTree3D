@@ -12,6 +12,10 @@ public class TreeGenerator : MonoBehaviour
 
     [Range(0,1)]
     public float MinScale = 0.5f;
+
+    public int MaxBranches = 500;
+
+    private int BranchCount = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +26,8 @@ public class TreeGenerator : MonoBehaviour
 
     private void CreateSection(GameObject obj)
     {
+        if(BranchCount > MaxBranches)
+            return;
         if (obj.transform.localScale.y < MinScale)
         {
             return;
@@ -52,7 +58,7 @@ public class TreeGenerator : MonoBehaviour
         obj2.transform.RotateAround(top - slide/ 2f, obj.transform.forward, RotateAngle);
 
         obj2.transform.RotateAround(top - slide/2f, obj.transform.up, 120 * side);
-
+        BranchCount++;
         return obj2;
     }
 
