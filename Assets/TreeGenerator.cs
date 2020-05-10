@@ -7,6 +7,8 @@ public class TreeGenerator : MonoBehaviour
     public GameObject BranchPrefab;
     public GameObject LeafPrefab;
 
+    public bool ShouldCreateLeaves = true;
+
     [Range(0, 1)]
     public float BranchRatio = 0.5f;
     [Range(0, 180)]
@@ -33,6 +35,8 @@ public class TreeGenerator : MonoBehaviour
 
     void CreateLeaf(GameObject obj)
     {
+        if(!ShouldCreateLeaves)
+            return;
         var top = GetTop(obj);
         Instantiate(LeafPrefab, top.top - top.add / 2f, obj.transform.rotation);
     }
