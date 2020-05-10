@@ -327,7 +327,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BranchPrefab: {fileID: 6982205034385796999, guid: a35f07a7512b8c14794f02c2ffb5a879,
     type: 3}
-  BranchRatio: 0.907
+  LeafPrefab: {fileID: 7679247811276665424, guid: 198734e93ca451942a1a531381f63fea,
+    type: 3}
+  BranchRatio: 0.81
   RotateAngle: 26.6
   MinScale: 0.5
   MaxBranchSections: 10
@@ -436,7 +438,7 @@ Transform:
   m_GameObject: {fileID: 2009996736}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
