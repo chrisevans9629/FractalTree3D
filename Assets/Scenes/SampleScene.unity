@@ -259,7 +259,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 0.15
   ZoomSpeed: 1
-  PanSpeed: 1
+  PanYSpeed: 1
+  PanXSpeed: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,7 +290,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.16
+  m_Intensity: 0.67
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -470,12 +471,12 @@ MonoBehaviour:
   LeafPrefab: {fileID: 7679247811276665424, guid: 198734e93ca451942a1a531381f63fea,
     type: 3}
   ShouldCreateLeaves: 0
-  BranchRatio: 0.859
-  RotateAngle: 15.1
-  MinScale: 0.115
-  MaxBranchSections: 7
+  BranchRatio: 0.844
+  RotateAngle: 30
+  MinScale: 0.3
+  MaxBranchSections: 8
   BranchingCount: 3
-  MaxBranches: 7895
+  MaxBranches: 12000
 --- !u!4 &2000477343
 Transform:
   m_ObjectHideFlags: 0

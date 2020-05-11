@@ -28,9 +28,9 @@ public class TreeGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var obj = Instantiate(BranchPrefab, transform.position, transform.rotation);
+        var obj = Instantiate(BranchPrefab, transform.position, transform.rotation, transform);
 
-        CreateSection(obj, 1);
+        CreateSection(obj);
     }
 
     void CreateLeaf(GameObject obj)
@@ -38,10 +38,10 @@ public class TreeGenerator : MonoBehaviour
         if(!ShouldCreateLeaves)
             return;
         var top = GetTop(obj);
-        Instantiate(LeafPrefab, top.top - top.add / 2f, obj.transform.rotation);
+        Instantiate(LeafPrefab, top.top - top.add / 2f, obj.transform.rotation, transform);
     }
 
-    private void CreateSection(GameObject obj, int branchCount)
+    private void CreateSection(GameObject obj, int branchSectionCount = 1, int branchCount = 1)
     {
         if (obj.transform.localScale.y < MinScale)
         {
@@ -49,13 +49,13 @@ public class TreeGenerator : MonoBehaviour
             return;
         }
 
-        if (branchCount > MaxBranchSections)
+        if (branchSectionCount > MaxBranchSections)
         {
             CreateLeaf(obj);
             return;
 
         }
-        if (branchCount * BranchingCount > MaxBranches)
+        if (branchCount > MaxBranches)
         {
             CreateLeaf(obj);
             return;
@@ -77,7 +77,7 @@ public class TreeGenerator : MonoBehaviour
 
         foreach (var branch in branches)
         {
-            CreateSection(branch, branchCount + 1);
+            CreateSection(branch, branchSectionCount + 1, branchCount + BranchingCount);
         }
 
     }
@@ -87,7 +87,7 @@ public class TreeGenerator : MonoBehaviour
         var slide = GetTop(obj);
 
         var obj2 = Instantiate(BranchPrefab, slide.top,
-            obj.transform.rotation);
+            obj.transform.rotation, transform);
 
         obj2.transform.localScale = new Vector3(obj.transform.localScale.x * BranchRatio, obj.transform.localScale.y * BranchRatio, obj.transform.localScale.z * BranchRatio);
 
