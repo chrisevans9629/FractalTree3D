@@ -134,9 +134,12 @@ public class BranchCreatorAnimated : IBranchCreator
 public class TreeGeneratorAnimated : ITreeGeneratorType
 {
     private readonly TreeGeneratorBase _gen;
-    public TreeGeneratorAnimated(TreeGeneratorBase gen)
+    private readonly ITreeUpdator _treeUpdator;
+
+    public TreeGeneratorAnimated(TreeGeneratorBase gen, ITreeUpdator treeUpdator)
     {
         _gen = gen;
+        _treeUpdator = treeUpdator;
     }
 
     public void Generate()
@@ -150,6 +153,7 @@ public class TreeGeneratorAnimated : ITreeGeneratorType
     public void Update()
     {
         UpdateBranch(Root);
+        _treeUpdator.Update();
         //if (Root.IsAnimationComplete)
         //{
         //    Root.AddBranches();
@@ -174,8 +178,8 @@ public class TreeGeneratorAnimated : ITreeGeneratorType
         }
         else
         {
-            branch.GameObject.transform.localScale += Vector3.up * _gen.AnimationSpeed;
-            branch.GameObject.transform.position += branch.GameObject.transform.up * _gen.AnimationSpeed;
+            branch.GameObject.transform.localScale += Vector3.up * _gen.AnimationSpeed * Time.deltaTime;
+            branch.GameObject.transform.position += branch.GameObject.transform.up * _gen.AnimationSpeed * Time.deltaTime;
         }
     }
 }
@@ -190,7 +194,7 @@ public class TreeGenerator : TreeGeneratorBase
     void Start()
     {
         //instant = new TreeGeneratorInstant(new BranchCreator(this, new BranchUpdator(this)), new TreeUpdator(this, new BranchUpdator(this)));
-        instant = new TreeGeneratorAnimated(this);
+        instant = new TreeGeneratorAnimated(this, new TreeUpdator(this, new BranchUpdator(this)));
 
         instant.Generate();
         PreviousRotateAngle = RotateAngle;
