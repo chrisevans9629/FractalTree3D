@@ -70,4 +70,12 @@ public abstract class TreeGeneratorBase : MonoBehaviour
             BranchingCount = i;
         }
     }
+
+    public void OnMinFpsChanged(string fps)
+    {
+        if (int.TryParse(fps, out var i))
+        {
+            MinFPS = i;
+        }
+    }
 }
