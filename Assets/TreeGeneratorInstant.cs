@@ -1,30 +1,27 @@
 ﻿public class TreeGeneratorInstant : ITreeGeneratorType
 {
-    private readonly TreeGeneratorBase _gen;
     private readonly IBranchCreator _branchCreator;
-    private IBranchUpdator _branchUpdator;
-    public TreeGeneratorInstant(TreeGeneratorBase gen)
+    private ITreeUpdator _treeUpdator;
+    public TreeGeneratorInstant(
+        IBranchCreator branchCreator,
+        ITreeUpdator treeUpdator)
     {
-        _gen = gen;
-        _branchUpdator = new BranchUpdator(gen);
-        _branchCreator = new BranchCreator(gen, _branchUpdator);
+        _treeUpdator = treeUpdator;
+        _branchCreator = branchCreator;
     }
-
 
     public void Generate()
     {
-        var obj = UnityEngine.Object.Instantiate(_gen.BranchPrefab, _gen.transform.position, _gen.transform.rotation, _gen.transform);
-        _gen.Branch = new Branch
-        {
-            GameObject = obj,
-            Branches = _branchCreator.CreateSection(obj),
-        };
+        _branchCreator.Generate();
+        
     }
 
     public void Update()
     {
-        _branchUpdator.Update();
+        _treeUpdator.Update();
     }
 
     
 }
+
+

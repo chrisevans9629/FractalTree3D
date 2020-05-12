@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class BranchCreator : IBranchCreator
 {
     private readonly TreeGeneratorBase _gen;
@@ -69,6 +71,16 @@ public class BranchCreator : IBranchCreator
         }
 
         return list;
+    }
+
+    public void Generate()
+    {
+        var obj = UnityEngine.Object.Instantiate(_gen.BranchPrefab, _gen.transform.position, _gen.transform.rotation, _gen.transform);
+        _gen.Branch = new Branch
+        {
+            GameObject = obj,
+            Branches = CreateSection(obj),
+        };
     }
 
     public List<Branch> CreateSection(GameObject parent)

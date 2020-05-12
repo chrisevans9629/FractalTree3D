@@ -2,6 +2,18 @@
 using System.Collections;
 
 
+public class TreeGeneratorAnimated : ITreeGeneratorType
+{
+    public void Generate()
+    {
+    }
+
+    public void Update()
+    {
+    }
+}
+
+
 public class TreeGenerator : TreeGeneratorBase
 {
     private ITreeGeneratorType instant;
@@ -10,7 +22,7 @@ public class TreeGenerator : TreeGeneratorBase
     // Start is called before the first frame update
     void Start()
     {
-        instant = new TreeGeneratorInstant(this);
+        instant = new TreeGeneratorInstant(new BranchCreator(this, new BranchUpdator(this)), new TreeUpdator(this, new BranchUpdator(this)));
 
         instant.Generate();
         PreviousRotateAngle = RotateAngle;
