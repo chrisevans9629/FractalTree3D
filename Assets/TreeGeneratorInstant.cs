@@ -23,29 +23,8 @@
 
     public void Update()
     {
-        if (_gen.PreviousRotateAngle == _gen.RotateAngle)
-            return;
-        //if(_previousBranchRatio == BranchRatio)
-        //    return;
-        _gen.PreviousRotateAngle = _gen.RotateAngle;
-        //_previousBranchRatio = BranchRatio;
-        UpdateAngle(_gen.Branch);
+        _branchUpdator.Update();
     }
 
-    void UpdateAngle(Branch root)
-    {
-        var mainAngle = 360f / _gen.BranchingCount;
-
-        var slide = _gen.GetTop(root.GameObject);
-
-        var end = slide.top - slide.add / 2f;
-
-        for (var index = 0; index < root.Branches.Count; index++)
-        {
-            var rootBranch = root.Branches[index];
-            _branchUpdator.UpdateBranch(root.GameObject, mainAngle * index, rootBranch.GameObject);
-
-            UpdateAngle(rootBranch);
-        }
-    }
+    
 }
