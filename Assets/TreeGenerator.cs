@@ -1,6 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public class Branch
+{
+    public GameObject GameObject;
+    public List<Branch> Branches { get; set; } = new List<Branch>();
+}
 
 public class TreeGenerator : MonoBehaviour
 {
@@ -25,40 +32,45 @@ public class TreeGenerator : MonoBehaviour
     [Range(0, 12000)]
     public int MaxBranches = 10000;
 
+    public Branch Branch { get; set; }
     // Start is called before the first frame update
     void Start()
     {
         var obj = Instantiate(BranchPrefab, transform.position, transform.rotation, transform);
 
-        CreateSection(obj);
+        Branch = new Branch() { GameObject = obj, };
+
+        Branch.Branches = CreateSection(obj);
+        _previousRotateAngle = RotateAngle;
+        //_previousBranchRatio = BranchRatio;
     }
 
     void CreateLeaf(GameObject obj)
     {
-        if(!ShouldCreateLeaves)
+        if (!ShouldCreateLeaves)
             return;
         var top = GetTop(obj);
         Instantiate(LeafPrefab, top.top - top.add / 2f, obj.transform.rotation, transform);
     }
 
-    private void CreateSection(GameObject obj, int branchSectionCount = 1, int branchCount = 1)
+    private List<Branch> CreateSection(GameObject obj, int branchSectionCount = 1, int branchCount = 1)
     {
         if (obj.transform.localScale.y < MinScale)
         {
             CreateLeaf(obj);
-            return;
+            return new List<Branch>();
         }
 
         if (branchSectionCount > MaxBranchSections)
         {
             CreateLeaf(obj);
-            return;
+            return new List<Branch>();
 
         }
         if (branchCount > MaxBranches)
         {
             CreateLeaf(obj);
-            return;
+            return new List<Branch>();
         }
 
         var mainAngle = 360f / BranchingCount;
@@ -74,28 +86,39 @@ public class TreeGenerator : MonoBehaviour
         }
 
 
-
+        var list = new List<Branch>();
         foreach (var branch in branches)
         {
-            CreateSection(branch, branchSectionCount + 1, branchCount + BranchingCount);
+            var section = CreateSection(branch, branchSectionCount + 1, branchCount + BranchingCount);
+            list.Add(new Branch() { GameObject = branch, Branches = section });
         }
 
+        return list;
     }
 
     private GameObject CreateBranch(GameObject obj, float angle)
     {
-        var slide = GetTop(obj);
+        var obj2 = Instantiate(BranchPrefab, Vector3.zero,
+            Quaternion.identity, transform);
+        return UpdateBranch(obj, angle, obj2);
+    }
 
-        var obj2 = Instantiate(BranchPrefab, slide.top,
-            obj.transform.rotation, transform);
+    private GameObject UpdateBranch(GameObject parent, float angle, GameObject currentBranch)
+    {
+        var slide = GetTop(parent);
 
-        obj2.transform.localScale = new Vector3(obj.transform.localScale.x * BranchRatio, obj.transform.localScale.y * BranchRatio, obj.transform.localScale.z * BranchRatio);
+        currentBranch.transform.position = slide.top;
+        currentBranch.transform.rotation = parent.transform.rotation;
+        currentBranch.transform.localScale = new Vector3(parent.transform.localScale.x * BranchRatio,
+            parent.transform.localScale.y * BranchRatio, parent.transform.localScale.z * BranchRatio);
 
+        var end = slide.top - slide.add / 2f;
 
-        obj2.transform.RotateAround(slide.top - slide.add / 2f, obj.transform.forward, RotateAngle);
+        currentBranch.transform.RotateAround(end, parent.transform.forward, RotateAngle);
 
-        obj2.transform.RotateAround(slide.top - slide.add / 2f, obj.transform.up, angle);
-        return obj2;
+        currentBranch.transform.RotateAround(end, parent.transform.up, angle);
+
+        return currentBranch;
     }
 
     class Top
@@ -108,12 +131,37 @@ public class TreeGenerator : MonoBehaviour
     {
         var slide = (obj.transform.up * obj.transform.localScale.y * (1 + BranchRatio));
         var top = obj.transform.position + slide;
-        return new Top(){top = top, add = slide};
+        return new Top() { top = top, add = slide };
     }
+    private float _previousRotateAngle;
 
+    //private float _previousBranchRatio;
     // Update is called once per frame
     void Update()
     {
+        if (_previousRotateAngle == RotateAngle)
+            return;
+        //if(_previousBranchRatio == BranchRatio)
+        //    return;
+        _previousRotateAngle = RotateAngle;
+        //_previousBranchRatio = BranchRatio;
+        UpdateAngle(this.Branch);
+    }
 
+    void UpdateAngle(Branch root)
+    {
+        var mainAngle = 360f / BranchingCount;
+
+        var slide = GetTop(root.GameObject);
+
+        var end = slide.top - slide.add / 2f;
+
+        for (var index = 0; index < root.Branches.Count; index++)
+        {
+            var rootBranch = root.Branches[index];
+            UpdateBranch(root.GameObject, mainAngle * index, rootBranch.GameObject);
+
+            UpdateAngle(rootBranch);
+        }
     }
 }
