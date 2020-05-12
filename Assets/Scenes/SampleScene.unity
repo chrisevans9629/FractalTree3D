@@ -474,7 +474,7 @@ MonoBehaviour:
   BranchRatio: 0.844
   RotateAngle: 30
   MinScale: 0.3
-  MaxBranchSections: 3
+  MaxBranchSections: 5
   BranchingCount: 3
   MaxBranches: 12000
 --- !u!4 &2000477343
