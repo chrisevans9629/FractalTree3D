@@ -4,5 +4,5 @@ using UnityEngine;
 public interface IBranchCreator
 {
     void Generate();
-    List<Branch> CreateSection(GameObject parent);
+    List<Branch> CreateSection(Branch parent);
 }

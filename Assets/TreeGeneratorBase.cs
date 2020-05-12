@@ -7,6 +7,10 @@ public abstract class TreeGeneratorBase : MonoBehaviour
 
     public bool ShouldCreateLeaves = true;
 
+    [Range(0.001f,1)]
+    public float AnimationSpeed = 0.01f;
+
+
     [Range(0, 1)]
     public float BranchRatio = 0.5f;
     [Range(0, 180)]

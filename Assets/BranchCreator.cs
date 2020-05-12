@@ -30,7 +30,7 @@ public class BranchCreator : IBranchCreator
             Quaternion.identity, _gen.transform);
         return _branchUpdator.UpdateBranch(obj, angle, obj2);
     }
-    public List<Branch> CreateSection(GameObject obj, int branchSectionCount = 1, int branchCount = 1)
+    public List<Branch> CreateSection(GameObject obj, int branchSectionCount, int branchCount = 1)
     {
         if (obj.transform.localScale.y < _gen.MinScale)
         {
@@ -79,12 +79,12 @@ public class BranchCreator : IBranchCreator
         _gen.Branch = new Branch
         {
             GameObject = obj,
-            Branches = CreateSection(obj),
         };
+        _gen.Branch.Branches = CreateSection(_gen.Branch);
     }
 
-    public List<Branch> CreateSection(GameObject parent)
+    public List<Branch> CreateSection(Branch parent)
     {
-        return CreateSection(parent,1,1);
+        return CreateSection(parent.GameObject,1,1);
     }
 }
