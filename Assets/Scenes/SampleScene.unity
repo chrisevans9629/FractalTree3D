@@ -3416,6 +3416,8 @@ MonoBehaviour:
     type: 3}
   LeafPrefab: {fileID: 7679247811276665424, guid: 198734e93ca451942a1a531381f63fea,
     type: 3}
+  FPS: 0
+  MinFPS: 45
   ShouldCreateLeaves: 0
   AnimationSpeed: 2.44
   BranchRatio: 0.844
