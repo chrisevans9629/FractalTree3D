@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.GameCenter;
 
@@ -152,18 +153,9 @@ public class TreeGeneratorAnimated : ITreeGeneratorType
     public BranchAnimated Root => _gen.Branch as BranchAnimated;
     public void Update()
     {
+        
         UpdateBranch(Root);
         _treeUpdator.Update();
-        //if (Root.IsAnimationComplete)
-        //{
-        //    Root.AddBranches();
-        //    return;
-        //}
-        //Root.GameObject.transform.localScale += Vector3.up * _gen.AnimationSpeed;
-        //Root.GameObject.transform.position += Root.GameObject.transform.up * _gen.AnimationSpeed;
-
-
-
     }
 
     public void UpdateBranch(BranchAnimated branch)
@@ -205,8 +197,24 @@ public class TreeGenerator : TreeGeneratorBase
     // Update is called once per frame
     void Update()
     {
+        FPS = 1 / Time.deltaTime;
+
+        if(FPS < MinFPS)
+            return;
+
         instant.Update();
     }
+
+    public void Generate()
+    {
+        foreach (Transform t in transform)
+        {
+            Destroy(t.gameObject);
+        }
+        instant.Generate();
+    }
+
+
 
 
 }

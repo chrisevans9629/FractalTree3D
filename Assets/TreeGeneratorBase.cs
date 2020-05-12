@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class TreeGeneratorBase : MonoBehaviour
 {
     public GameObject BranchPrefab;
     public GameObject LeafPrefab;
-
+    public float FPS;
+    public float MinFPS = 20;
     public bool ShouldCreateLeaves = true;
 
     [Range(0.001f,5)]
@@ -38,4 +40,34 @@ public abstract class TreeGeneratorBase : MonoBehaviour
         return new Top() { top = top, add = slide };
     }
 
+    public void OnLeavesChanged(bool leaves)
+    {
+        ShouldCreateLeaves = leaves;
+    }
+    public void OnAngleChanged(float angle)
+    {
+        RotateAngle = angle;
+    }
+    public void OnAnimationChange(float animation)
+    {
+        AnimationSpeed = animation;
+    }
+
+    public void OnRatio(float ratio)
+    {
+        BranchRatio = ratio;
+    }
+
+    public void OnSectionChanged(float section)
+    {
+        MaxBranchSections = Convert.ToInt32(section);
+    }
+
+    public void OnBranchingCountChanged(string value)
+    {
+        if (int.TryParse(value, out var i))
+        {
+            BranchingCount = i;
+        }
+    }
 }
